@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ola Ride Receipt - CRN11276703197</title>
+    <!-- Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- html2pdf.js CDN for clean client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Hidden / Secret PDF Download Trigger Button (Reveals on Hover) -->
+    <div class="hidden-pdf-trigger no-print">
+        <button class="secret-download-btn" onclick="downloadPDF('receipt-content', 'Ola_Ride_Receipt.pdf', this)"
+            title="Secret PDF Download Button (Ctrl + Shift + D)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download PDF
+        </button>
+    </div>
+
+    <!-- Main Receipt Document Card -->
+    <div class="receipt-card" id="receipt-content">
+
+        <!-- Top Header -->
+        <div class="receipt-header-top">
+            <div class="date-text" id="display-receipt-date">04 Sep, 2026</div>
+            <div class="ola-logo">
+                <img src="ola_logo.png" alt="OLA Logo" style="height: 38px; width: auto; object-fit: contain;">
+            </div>
+        </div>
+
+        <!-- Big Amount Section -->
+        <div class="receipt-amount-section">
+            <div class="receipt-amount" id="display-receipt-amount">₹161</div>
+            <div class="crn-wrapper">
+                <div class="crn-line"></div>
+                <div class="crn-text" id="display-receipt-crn">CRN11276703197</div>
+                <div class="crn-line"></div>
+            </div>
+            <div class="thanks-text" id="display-receipt-thanks">Thanks for travelling with us, SHARWAN VERMA</div>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <!-- Two Columns Layout -->
+        <div class="two-columns">
+
+            <!-- Left Column: Ride Details -->
+            <div class="left-column">
+                <div class="column-title">Ride Details</div>
+
+                <!-- Map Container -->
+                <div class="map-container">
+                    <img src="map_image.png" alt="Ola Ride Map">
+                </div>
+
+                <!-- Driver Photo & Name -->
+                <div class="driver-section">
+                    <svg width="44" height="52" viewBox="0 0 44 52" style="border:1px solid #ccc; background:#e0e0e0;">
+                        <rect width="44" height="52" fill="#d0d7de" />
+                        <circle cx="22" cy="18" r="10" fill="#777777" />
+                        <path d="M 6 46 C 6 34, 14 30, 22 30 C 30 30, 38 34, 38 46 Z" fill="#777777" />
+                    </svg>
+                    <div class="driver-name" id="display-driver-name">PRAKASH INGOLE</div>
+                </div>
+
+                <!-- Speedometer & Trip Stats -->
+                <div class="ride-info-row">
+                    <div class="icon-speedometer">
+                        <img src="speedmeter.png" alt="Speedometer"
+                            style="height: 40px; width: auto; vertical-align: middle;">
+                    </div>
+                    <div id="display-trip-stats">8.1 km &nbsp;&nbsp;&nbsp; 15 min</div>
+                </div>
+
+                <!-- Car Vehicle Details -->
+                <div class="ride-info-row">
+                    <div class="icon-car">
+                        <img src="car.png" alt="Car" style="height: 40px; width: auto; vertical-align: middle;">
+                    </div>
+                    <div id="display-car-name">Mini - White Tour H2 CNG</div>
+                </div>
+
+                <!-- Pickup & Drop Timeline -->
+                <div class="timeline-section">
+                    <div class="timeline-item">
+                        <div class="timeline-time" id="display-pickup-time">09:46 AM</div>
+                        <div class="timeline-marker-container">
+                            <div class="dot-green"></div>
+                            <div class="timeline-line"></div>
+                        </div>
+                        <div class="timeline-address" id="display-pickup-address">
+                            Shubham Complex, Vatan Nagar, Talegaon Dabhade R, Maharashtra 410507, India
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-time" id="display-drop-time">10:16 AM</div>
+                        <div class="timeline-marker-container">
+                            <div class="dot-red"></div>
+                        </div>
+                        <div class="timeline-address" id="display-drop-address">
+                            Maxtech Sintered Product Pvt Ltd, Mawal, Pune, Maharashtra, 412106, India
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Bill Details -->
+            <div class="right-column">
+                <div class="column-title">Bill Details</div>
+
+                <table class="bill-table">
+                    <tr class="bg-row">
+                        <td>Ride Fare</td>
+                        <td class="amount-col" id="display-ride-fare">₹154.97</td>
+                    </tr>
+                    <tr>
+                        <td>Convenience Fees</td>
+                        <td class="amount-col" id="display-convenience-fee">₹5.93</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total Bill <span class="rounded-text">(rounded)</span></td>
+                        <td class="amount-col" id="display-total-bill">₹161</td>
+                    </tr>
+                </table>
+
+                <div class="queries-text">
+                    Have queries? Visit <a href="#" class="queries-link">support for this ride.</a>
+                </div>
+
+                <div class="disclaimer-text">
+                    * This document is issued at the passenger's request for reference purposes only and may be used for
+                    reimbursement or official documentation as applicable.
+                </div>
+
+                <div class="disclaimer-text">
+                    Note: Price here is "Selected Price" which denotes fare mutually agreed upon by the user and the
+                    driver, selected from within a system-generated estimated price range.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Horizontal Line Below Bill Details / Columns -->
+        <div class="divider-line"></div>
+
+        <!-- Payment Section -->
+        <div class="payment-section-title">Payment</div>
+        <div class="payment-row">
+            <div class="payment-method">
+                <img src="cash_icon.png" alt="Cash" style="height: 18px; width: auto; vertical-align: middle;">
+                Paid by Cash
+            </div>
+            <div class="payment-amount" id="display-payment-amount">₹161</div>
+        </div>
+
+        <!-- Footer Complaint Info -->
+        <div class="receipt-footer-box">
+            In case of any complaint/grievance against this receipt, write to us at<br>
+            Grievance officer, ANI Technologies Private Limited, Ola Campus, Prestige RMZ star tech, C wing, Koramangala
+            Industrial layout, Koramangala, Hosur road, Bengaluru, Karnataka, 560095
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

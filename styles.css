@@ -1,0 +1,1130 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap');
+
+/* Standard Reset & Typography */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background-color: #e5e5e5;
+    color: #333333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header & Controls for App Frame */
+.app-header {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+}
+
+.tab-group {
+    display: flex;
+    gap: 10px;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background: #f8f9fa;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+
+.download-pdf-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.download-pdf-btn:hover {
+    background-color: #219653;
+}
+
+/* Generator Panel Styles */
+.generator-toggle-bar {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 15px;
+}
+
+.btn-toggle-generator {
+    width: 100%;
+    padding: 10px 16px;
+    background: #1e293b;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transition: background 0.2s;
+}
+
+.btn-toggle-generator:hover {
+    background: #0f172a;
+}
+
+.generator-panel {
+    width: 100%;
+    max-width: 800px;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.generator-panel-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.input-with-btn {
+    display: flex;
+    gap: 6px;
+}
+
+.input-with-btn input {
+    flex: 1;
+}
+
+.btn-rand {
+    padding: 6px 10px;
+    background: #e2e8f0;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.btn-rand:hover {
+    background: #cbd5e1;
+    color: #0f172a;
+}
+
+/* Hidden PDF Button Overlay / Secret Hover Trigger */
+.hidden-pdf-trigger {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 9999;
+    opacity: 0.15;
+    transition: opacity 0.3s ease;
+}
+
+.hidden-pdf-trigger:hover {
+    opacity: 1;
+}
+
+.secret-download-btn {
+    background: rgba(0, 0, 0, 0.85);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(4px);
+}
+
+.secret-download-btn:hover {
+    background: #000000;
+    border-color: #9ec828;
+    color: #9ec828;
+}
+
+/* PAGE 1: OLA RIDE RECEIPT */
+.receipt-card {
+    width: 720px;
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    padding: 30px 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.receipt-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.date-text {
+    font-size: 15px;
+    color: #555555;
+}
+
+.ola-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ola-logo-svg {
+    height: 32px;
+    width: auto;
+}
+
+.receipt-amount-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.receipt-amount {
+    font-size: 40px;
+    font-weight: 600;
+    color: #000000;
+    letter-spacing: -0.5px;
+}
+
+.crn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0 10px 0;
+}
+
+.crn-line {
+    flex-grow: 0.15;
+    height: 0;
+    border-top: 1px solid #cccccc;
+    font-size: 0;
+    line-height: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.crn-text {
+    font-size: 13px;
+    color: #666666;
+    letter-spacing: 0.5px;
+}
+
+.thanks-text {
+    text-align: center;
+    font-size: 14px;
+    color: #222222;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.divider-line {
+    width: 100%;
+    height: 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 15px 0;
+    font-size: 0;
+    line-height: 0;
+    clear: both;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* Columns Layout */
+.two-columns {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.left-column {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-column {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.column-title-ride {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 12px;
+    text-align: center;
+    padding-bottom: 8px;
+}
+
+.column-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 12px;
+    text-align: center;
+    border-bottom: 1px solid #cccccc;
+    padding-bottom: 8px;
+}
+
+/* Map Styling */
+.map-container {
+    width: 100%;
+    height: 250px;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 15px;
+    background-color: #e8ecef;
+}
+
+.map-container img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Driver Section */
+.driver-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.driver-photo {
+    width: 44px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+}
+
+.driver-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: 0.3px;
+}
+
+/* Ride Info Row */
+.ride-info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 14px;
+    color: #222;
+}
+
+.icon-speedometer, .icon-car {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-speedometer img, .icon-car img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Timeline Route */
+.timeline-section {
+    padding: 12px 0;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    min-width: 65px;
+    padding-top: 1px;
+}
+
+#input-customer-name {
+    text-transform: uppercase;
+}
+
+.timeline-marker-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4px;
+    position: relative;
+    width: 12px;
+    align-self: stretch;
+    flex-shrink: 0;
+}
+
+.dot-green {
+    width: 9px;
+    height: 9px;
+    background-color: #27ae60 !important;
+    border-radius: 50%;
+    z-index: 2;
+    display: block;
+    flex-shrink: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: 0 0 0 1px #27ae60;
+}
+
+.dot-red {
+    width: 9px;
+    height: 9px;
+    background-color: #e74c3c !important;
+    border-radius: 50%;
+    z-index: 2;
+    display: block;
+    flex-shrink: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: 0 0 0 1px #e74c3c;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 8px;
+    bottom: -23px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    border-left: 2px dotted #555555 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    z-index: 1;
+}
+
+.timeline-address {
+    font-size: 12px;
+    color: #333333;
+    line-height: 1.35;
+    flex: 1;
+}
+
+/* Bill Details Table */
+.bill-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.bill-table td {
+    padding: 8px 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.bill-table tr.bg-row td {
+    background-color: #f5f5f5;
+}
+
+.bill-table .amount-col {
+    text-align: right;
+    font-weight: 500;
+}
+
+.bill-table .total-row td {
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 1px solid #333;
+}
+
+.rounded-text {
+    font-weight: 400;
+    color: #777;
+    font-size: 12px;
+}
+
+.queries-text {
+    font-size: 12px;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.queries-link {
+    color: #2980b9;
+    text-decoration: none;
+}
+
+.queries-link:hover {
+    text-decoration: underline;
+}
+
+.disclaimer-text {
+    font-size: 10.5px;
+    color: #666666;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+/* Payment Section */
+.payment-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    margin: 15px 0 10px 0;
+    color: #000;
+}
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 40px;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #444;
+}
+
+.cash-icon {
+    width: 24px;
+    height: 14px;
+    background: #73c784;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    border: 1px dashed #ffffff;
+}
+
+.payment-amount {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Receipt Footer */
+.receipt-footer-box {
+    background-color: #efefef;
+    padding: 10px 15px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 10px;
+    color: #555555;
+    line-height: 1.35;
+}
+
+
+/* PAGE 2: OLA TAX INVOICE */
+.invoice-card-frame {
+    width: 720px;
+    background: #f0f0f0;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.invoice-card {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    padding: 25px 35px;
+}
+
+.invoice-top-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 25px;
+}
+
+.invoice-header-grid {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.company-details {
+    width: 55%;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #222222;
+}
+
+.company-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000000;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+.tax-meta-details {
+    width: 42%;
+    text-align: right;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #222222;
+}
+
+.invoice-id-row {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.inv-id-label {
+    color: #666;
+}
+
+.inv-id-val {
+    
+    color: #000;
+}
+
+.horizontal-rule {
+    width: 100%;
+    height: 0;
+    border-top: 1px solid #666666;
+    margin: 8px 0;
+    font-size: 0;
+    line-height: 0;
+    clear: both;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.thin-rule {
+    width: 100%;
+    height: 0;
+    border-top: 1px solid #cccccc;
+    margin: 8px 0;
+    font-size: 0;
+    line-height: 0;
+    clear: both;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.dashed-rule {
+    width: 100%;
+    height: 0;
+    border-top: 1px dashed #888888;
+    margin: 8px 0;
+    font-size: 0;
+    line-height: 0;
+    clear: both;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.customer-info-grid {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin: 8px 0;
+}
+
+.customer-name-block, .customer-mobile-block {
+    color: #555555;
+}
+
+.val-bold {
+    color: #000000;
+    
+}
+
+.supply-address-block {
+    font-size: 12px;
+    color: #555555;
+    line-height: 1.4;
+    margin: 8px 0;
+}
+
+/* Invoice Items Table */
+.invoice-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.invoice-items-table th {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000000;
+    text-align: left;
+    padding: 6px 0;
+}
+
+.invoice-items-table th.right-align, .invoice-items-table td.right-align {
+    text-align: right;
+}
+
+.invoice-items-table td {
+    padding: 6px 0;
+    font-size: 12px;
+    color: #222222;
+    vertical-align: top;
+}
+
+.sub-text {
+    font-size: 11px;
+    color: #666666;
+    margin-top: 2px;
+}
+
+.total-value-row td {
+    padding-top: 8px;
+    font-weight: 700;
+}
+
+.payment-details-section {
+    margin-top: 10px;
+}
+
+.payment-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 6px;
+}
+
+.payment-meta-grid {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 4px 10px;
+    font-size: 12px;
+    color: #222222;
+}
+
+.payment-meta-label {
+    color: #333333;
+}
+
+.invoice-footnote {
+    margin-top: 15px;
+    font-size: 10px;
+    color: #333333;
+    line-height: 1.4;
+}
+
+.footnote-title {
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+/* RESPONSIVE SCREEN STYLES FOR MOBILE PHONES & TABLETS */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px 8px;
+    }
+
+    .app-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        padding: 12px 14px;
+        text-align: center;
+    }
+
+    .app-title {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .tab-group {
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .tab-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+    .download-pdf-btn {
+        justify-content: center;
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .generator-toggle-bar {
+        width: 100%;
+    }
+
+    .generator-panel {
+        padding: 14px 16px;
+        width: 100%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .form-group[style*="grid-column: span 2"] {
+        grid-column: span 1 !important;
+    }
+
+    #document-container {
+        width: 100%;
+        max-width: 720px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .receipt-card {
+        width: 100%;
+        max-width: 720px;
+        padding: 20px 15px;
+    }
+
+    .invoice-card-frame {
+        width: 100%;
+        max-width: 720px;
+        padding: 15px 10px;
+    }
+
+    .invoice-card {
+        padding: 15px 12px;
+    }
+
+    .payment-row {
+        padding: 10px 15px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .two-columns {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .left-column, .right-column {
+        width: 100%;
+    }
+
+    .invoice-header-grid {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .company-details, .tax-meta-details {
+        width: 100%;
+        text-align: left;
+    }
+
+    .customer-info-grid {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+/* STRICT PDF RENDERING MODE (Enforces exact 720px Desktop Layout on Mobile & Desktop during PDF export) */
+body.pdf-rendering {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 720px !important;
+    min-width: 720px !important;
+}
+
+body.pdf-rendering #document-container {
+    width: 720px !important;
+    max-width: 720px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+}
+
+body.pdf-rendering #receipt-view {
+    width: 720px !important;
+    max-width: 720px !important;
+    margin-bottom: 0px !important;
+    display: block !important;
+}
+
+body.pdf-rendering .receipt-card {
+    width: 720px !important;
+    max-width: 720px !important;
+    min-width: 720px !important;
+    padding: 22px 35px !important;
+    box-shadow: none !important;
+    border: 1px solid #dcdcdc !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+}
+
+body.pdf-rendering #invoice-view {
+    width: 720px !important;
+    max-width: 720px !important;
+    display: block !important;
+}
+
+body.pdf-rendering .invoice-card-frame {
+    width: 720px !important;
+    max-width: 720px !important;
+    min-width: 720px !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    background: #f0f0f0 !important;
+}
+
+body.pdf-rendering .invoice-card {
+    width: 100% !important;
+    padding: 20px 30px !important;
+    box-sizing: border-box !important;
+    border: 1px solid #cccccc !important;
+}
+
+body.pdf-rendering .two-columns {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 25px !important;
+}
+
+body.pdf-rendering .left-column,
+body.pdf-rendering .right-column {
+    width: 50% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+body.pdf-rendering .invoice-header-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+}
+
+body.pdf-rendering .company-details {
+    width: 55% !important;
+}
+
+body.pdf-rendering .tax-meta-details {
+    width: 42% !important;
+    text-align: right !important;
+}
+
+body.pdf-rendering .customer-info-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+}
+
+body.pdf-rendering .map-container {
+    height: 220px !important;
+}
+
+/* Global Page & Print Header/Footer Reset */
+@page {
+    size: auto;
+    margin: 0;
+}
+
+/* PRINT MEDIA OVERRIDES */
+@media print {
+    @page {
+        margin: 0;
+    }
+    html, body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+    
+    .no-print, .app-header, .hidden-pdf-trigger, .generator-toggle-bar, .generator-panel, .tab-group {
+        display: none !important;
+    }
+
+    #document-container {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #receipt-view, #invoice-view {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .receipt-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10mm 12mm !important;
+        background: #ffffff !important;
+        box-sizing: border-box !important;
+    }
+
+    .invoice-card-frame {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10mm 12mm !important;
+        background: #ffffff !important;
+        box-sizing: border-box !important;
+    }
+
+    .invoice-card {
+        border: none !important;
+        padding: 0 !important;
+        width: 100% !important;
+        background: #ffffff !important;
+    }
+
+    .two-columns {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    .left-column, .right-column {
+        width: 50% !important;
+    }
+
+    .invoice-header-grid {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    .company-details {
+        width: 55% !important;
+    }
+
+    .tax-meta-details {
+        width: 42% !important;
+        text-align: right !important;
+    }
+}
+
+/* Multi-page PDF Export Helpers */
+.pdf-page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+}
+
+
+

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ola Receipts & Tax Invoices Hub</title>
+    <!-- Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- html2pdf.js CDN for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Hidden / Secret PDF Download Trigger Button (Reveals on Hover) -->
+    <div class="hidden-pdf-trigger no-print">
+        <button class="secret-download-btn" onclick="downloadActivePDF(this)"
+            title="Secret PDF Download Button (Ctrl + Shift + D)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download PDF File
+        </button>
+    </div>
+
+    <!-- Navigation Header Bar (Hidden in Print Output) -->
+    <div class="app-header no-print">
+        <div class="app-title">Ola Document Manager</div>
+        <div class="tab-group">
+            <button class="tab-btn active" onclick="switchTab('both')">View Both Pages</button>
+            <button class="tab-btn" onclick="switchTab('receipt')">Page 1: Ride Receipt</button>
+            <button class="tab-btn" onclick="switchTab('invoice')">Page 2: Tax Invoice</button>
+        </div>
+        <button class="download-pdf-btn" onclick="downloadActivePDF(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download PDF
+        </button>
+    </div>
+
+    <!-- Generator Panel Toggle Bar -->
+    <div class="generator-toggle-bar no-print">
+        <button id="toggle-panel-btn" class="btn-toggle-generator" onclick="toggleGeneratorPanel()">
+            ⚙️ Edit Document Details (Form)
+        </button>
+    </div>
+
+    <!-- Collapsible Generator Form Control Panel -->
+    <div id="generator-panel" class="generator-panel no-print" style="display: none;">
+        <div class="generator-panel-title">
+            <span>⚙️ Ola Document Data Generator</span>
+        </div>
+
+        <div class="form-grid">
+            <!-- Customer Name & Mobile -->
+            <div class="form-group">
+                <label for="input-customer-name">Customer Name</label>
+                <input type="text" id="input-customer-name" value="SHARWAN VERMA" style="text-transform: uppercase;"
+                    oninput="updateReceiptField('customerName', this.value)">
+            </div>
+
+            <div class="form-group">
+                <label for="input-customer-mobile">Customer Mobile</label>
+                <input type="text" id="input-customer-mobile" value="+919426996059"
+                    oninput="handleCustomerMobileInput(this)" onkeydown="handleCustomerMobileKeyDown(event)">
+            </div>
+
+            <!-- Total Bill (Triggers Dynamic Math Settlement) -->
+            <div class="form-group">
+                <label for="input-total-bill">Total Bill (₹)</label>
+                <input type="number" id="input-total-bill" value="161" step="1"
+                    oninput="handleTotalBillChange(this.value)">
+            </div>
+
+            <!-- Convenience Fee (Auto Calculated / Adjustable) -->
+            <div class="form-group">
+                <label for="input-convenience-fee">Convenience Fee (Auto ₹5-7)</label>
+                <input type="text" id="input-convenience-fee" value="5.93" readonly style="background:#f1f5f9;">
+            </div>
+
+            <!-- Ride Fare (Auto Calculated) -->
+            <div class="form-group">
+                <label for="input-ride-fare">Ride Fare (Auto)</label>
+                <input type="text" id="input-ride-fare" value="154.97" readonly style="background:#f1f5f9;">
+            </div>
+
+            <!-- Driver Name Dropdown -->
+            <div class="form-group">
+                <label for="input-driver-name">Driver Name</label>
+                <select id="input-driver-name" onchange="updateReceiptField('driverName', this.value)">
+                    <option value="PRAKASH INGOLE" selected>PRAKASH INGOLE</option>
+                    <option value="RAMESH SHARMA">RAMESH SHARMA</option>
+                    <option value="SURESH PATIL">SURESH PATIL</option>
+                    <option value="VIJAY KUMAR">VIJAY KUMAR</option>
+                    <option value="ANIL DESHMUKH">ANIL DESHMUKH</option>
+                </select>
+            </div>
+
+            <!-- Car Name Dropdown -->
+            <div class="form-group">
+                <label for="input-car-name">Car Name / Type</label>
+                <select id="input-car-name" onchange="updateReceiptField('carName', this.value)">
+                    <option value="Mini - White Tour H2 CNG" selected>Mini - White Tour H2 CNG</option>
+                    <option value="Sedan - Dzire White">Sedan - Dzire White</option>
+                    <option value="Prime SUV - Ertiga Silver">Prime SUV - Ertiga Silver</option>
+                    <option value="Auto - Yellow Green">Auto - Yellow Green</option>
+                    <option value="Micro - Wagon R White">Micro - Wagon R White</option>
+                </select>
+            </div>
+
+            <!-- Distance KM & Time -->
+            <div class="form-group">
+                <label for="input-distance">Distance (KM)</label>
+                <input type="number" step="0.1" id="input-distance" value="8.1"
+                    oninput="updateReceiptField('distanceKm', this.value)">
+            </div>
+
+            <div class="form-group">
+                <label for="input-duration">Time Taken (Minutes)</label>
+                <input type="number" step="1" id="input-duration" value="15"
+                    oninput="updateReceiptField('durationMin', this.value)">
+            </div>
+
+            <!-- Ride Dates & Times Pickers -->
+            <div class="form-group">
+                <label for="input-ride-date">Ride Date Picker</label>
+                <input type="date" id="input-ride-date" value="2026-09-04"
+                    onchange="updateReceiptField('rideDateRaw', this.value)">
+            </div>
+
+            <div class="form-group">
+                <label for="input-pickup-time">Pickup Time (AM/PM)</label>
+                <input type="time" id="input-pickup-time" value="09:46"
+                    onchange="updateReceiptField('pickupTimeRaw', this.value)">
+            </div>
+
+            <div class="form-group">
+                <label for="input-drop-time">Drop Time (Auto calculated)</label>
+                <input type="time" id="input-drop-time" value="10:16"
+                    onchange="updateReceiptField('dropTimeRaw', this.value)">
+            </div>
+
+            <!-- CRN Number (Auto Random Generator) -->
+            <div class="form-group">
+                <label for="input-crn">CRN Number (Prefix CRN)</label>
+                <div class="input-with-btn">
+                    <input type="text" id="input-crn" value="CRN11276703197"
+                        oninput="updateReceiptField('crn', this.value)">
+                    <button class="btn-rand" onclick="generateRandomCRN()" title="Generate Random CRN">🎲
+                        Random</button>
+                </div>
+            </div>
+
+            <!-- Invoice ID (Auto Random Generator) -->
+            <div class="form-group">
+                <label for="input-invoice-id">Invoice ID (Prefix CIG)</label>
+                <div class="input-with-btn">
+                    <input type="text" id="input-invoice-id" value="CIGYJTCWW539349"
+                        oninput="updateReceiptField('invoiceId', this.value)">
+                    <button class="btn-rand" onclick="generateRandomInvoiceId()" title="Generate Random Invoice ID">🎲
+                        Random</button>
+                </div>
+            </div>
+
+            <!-- Pickup Address -->
+            <div class="form-group" style="grid-column: span 2;">
+                <label for="input-pickup-address">From Address (Pickup)</label>
+                <textarea id="input-pickup-address" rows="2"
+                    oninput="updateReceiptField('pickupAddress', this.value)">Shubham Complex, Vatan Nagar, Talegaon Dabhade R, Maharashtra 410507, India</textarea>
+            </div>
+
+            <!-- Drop Address -->
+            <div class="form-group" style="grid-column: span 2;">
+                <label for="input-drop-address">To Address (Drop)</label>
+                <textarea id="input-drop-address" rows="2"
+                    oninput="updateReceiptField('dropAddress', this.value)">Maxtech Sintered Product Pvt Ltd, Mawal, Pune, Maharashtra, 412106, India</textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- UNIFIED DOCUMENT CONTAINER FOR MULTI-PAGE PDF GENERATION -->
+    <div id="document-container">
+        <!-- PAGE 1: RIDE RECEIPT -->
+        <div id="receipt-view" style="display: block; margin-bottom: 40px;">
+            <div class="receipt-card" id="receipt-content">
+                <!-- Top Header -->
+                <div class="receipt-header-top">
+                    <div class="date-text" id="display-receipt-date">04 Sep, 2026</div>
+                    <div class="ola-logo">
+                        <img src="ola_logo.png" alt="OLA Logo" style="height: 38px; width: auto; object-fit: contain;">
+                    </div>
+                </div>
+
+                <!-- Big Amount Section -->
+                <div class="receipt-amount-section">
+                    <div class="receipt-amount" id="display-receipt-amount">₹161</div>
+                    <div class="crn-wrapper">
+                        <div class="crn-line"></div>
+                        <div class="crn-text" id="display-receipt-crn">CRN11276703197</div>
+                        <div class="crn-line"></div>
+                    </div>
+                    <div class="thanks-text" id="display-receipt-thanks">Thanks for travelling with us, SHARWAN VERMA
+                    </div>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <!-- Two Columns Layout -->
+                <div class="two-columns">
+                    <!-- Left Column: Ride Details -->
+                    <div class="left-column">
+                        <div class="column-title-ride">Ride Details</div>
+
+                        <!-- Map Container -->
+                        <div class="map-container">
+                            <img src="map_image.png" alt="Ola Ride Map">
+                        </div>
+
+                        <!-- Driver Section -->
+                        <div class="driver-section">
+                            <svg width="44" height="52" viewBox="0 0 44 52"
+                                style="border:1px solid #ccc; background:#e0e0e0;">
+                                <rect width="44" height="52" fill="#d0d7de" />
+                                <circle cx="22" cy="18" r="10" fill="#777777" />
+                                <path d="M 6 46 C 6 34, 14 30, 22 30 C 30 30, 38 34, 38 46 Z" fill="#777777" />
+                            </svg>
+                            <div class="driver-name" id="display-driver-name">PRAKASH INGOLE</div>
+                        </div>
+
+                        <div class="ride-info-row">
+                            <div class="icon-speedometer">
+                                <img src="speedmeter.png" alt="Speedometer"
+                                    style="height: 40px; width: auto; vertical-align: middle;">
+                            </div>
+                            <div id="display-trip-stats">8.1 km &nbsp;&nbsp;&nbsp; 15 min</div>
+                        </div>
+
+                        <div class="ride-info-row">
+                            <div class="icon-car">
+                                <img src="car.png" alt="Car" style="height: 40px; width: auto; vertical-align: middle;">
+                            </div>
+                            <div id="display-car-name">Mini - White Tour H2 CNG</div>
+                        </div>
+
+                        <div class="timeline-section">
+                            <div class="timeline-item">
+                                <div class="timeline-time" id="display-pickup-time">09:46 AM</div>
+                                <div class="timeline-marker-container">
+                                    <div class="dot-green"></div>
+                                    <div class="timeline-line"></div>
+                                </div>
+                                <div class="timeline-address" id="display-pickup-address">
+                                    Shubham Complex, Vatan Nagar, Talegaon Dabhade R, Maharashtra 410507, India
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-time" id="display-drop-time">10:16 AM</div>
+                                <div class="timeline-marker-container">
+                                    <div class="dot-red"></div>
+                                </div>
+                                <div class="timeline-address" id="display-drop-address">
+                                    Maxtech Sintered Product Pvt Ltd, Mawal, Pune, Maharashtra, 412106, India
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Bill Details -->
+                    <div class="right-column">
+                        <div class="column-title">Bill Details</div>
+                        <table class="bill-table">
+                            <tr class="bg-row">
+                                <td>Ride Fare</td>
+                                <td class="amount-col" id="display-ride-fare">₹154.97</td>
+                            </tr>
+                            <tr>
+                                <td>Convenience Fees</td>
+                                <td class="amount-col" id="display-convenience-fee">₹5.93</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td>Total Bill <span class="rounded-text">(rounded)</span></td>
+                                <td class="amount-col" id="display-total-bill">₹161</td>
+                            </tr>
+                        </table>
+
+                        <div class="queries-text">
+                            Have queries? Visit <a href="#" class="queries-link">support for this ride.</a>
+                        </div>
+
+                        <div class="disclaimer-text">
+                            * This document is issued at the passenger's request for reference purposes only and may be
+                            used
+                            for reimbursement or official documentation as applicable.
+                        </div>
+
+                        <div class="disclaimer-text">
+                            Note: Price here is "Selected Price" which denotes fare mutually agreed upon by the user and
+                            the
+                            driver, selected from within a system-generated estimated price range.
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Payment Section -->
+                <div class="payment-section-title">Payment</div>
+                <div class="payment-row">
+                    <div class="payment-method">
+                        <img src="cash_icon.png" alt="Cash" style="height: 18px; width: auto; vertical-align: middle;">
+                        Paid by Cash
+                    </div>
+                    <div class="payment-amount" id="display-payment-amount">₹161</div>
+                </div>
+
+                <!-- Footer Complaint Info -->
+                <div class="receipt-footer-box">
+                    In case of any complaint/grievance against this receipt, write to us at<br>
+                    <span style="color: #000;"> Grievance officer, ANI Technologies Private Limited, Ola Campus,
+                        Prestige RMZ star tech, C
+                        wing,
+                        Koramangala Industrial layout, Koramangala, Hosur road, Bengaluru, Karnataka, 560095</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: TAX INVOICE -->
+        <div id="invoice-view" class="pdf-page-break" style="display: block;">
+            <div class="invoice-card-frame">
+                <div class="invoice-card" id="invoice-content">
+                    <div class="invoice-top-title">Original Tax Invoice</div>
+
+                    <div class="invoice-header-grid">
+                        <div class="company-details">
+                            <div style="margin-bottom: 0px;">
+                                <img src="ola_logo.png" alt="OLA Logo"
+                                    style="height: 38px; width: auto; object-fit: contain;">
+                            </div>
+                            <div class="company-name">ANI Technologies Pvt. Ltd.</div>
+                            Gala No. 07, Ground floor, Amfotech Park, Plot<br>
+                            No - A/ 26, Road No. B-8, Wagle Ind. Estate,<br>
+                            Thane West-400604
+                        </div>
+
+                        <div class="tax-meta-details">
+                            <span class="inv-id-label">State GSTIN:</span> 27AAJCA1389G1ZJ<br>
+                            <span class="inv-id-label">SAC Code:</span> 999799<br>
+                            <span class="inv-id-label">Service Tax Category:</span> Business Auxiliary<br /> Service
+                        </div>
+                    </div>
+
+                    <div class="horizontal-rule"></div>
+
+                    <div class="invoice-id-row">
+                        <div><span class="inv-id-label">Invoice ID</span> <span class="inv-id-val"
+                                id="display-inv-id">CIGYJTCWW539349</span>
+                        </div>
+                        <div><span class="inv-id-label">Invoice Date</span> <span class="inv-id-val"
+                                id="display-inv-date">04/09/2026</span></div>
+                    </div>
+
+                    <div class="horizontal-rule"></div>
+
+                    <div class="customer-info-grid">
+                        <div class="customer-name-block">Customer Name <span class="val-bold"
+                                id="display-inv-customer">SHARWAN VERMA</span></div>
+                        <div class="customer-mobile-block">Mobile Number <span class="val-bold"
+                                id="display-inv-mobile">+919426996059</span></div>
+                    </div>
+
+                    <div class="horizontal-rule"></div>
+
+                    <div class="supply-address-block">
+                        Supply Address <span style="color:#000;">Gala No. 07, Ground floor, Amfotech Park,
+                            <br />
+                            Plot No - A/
+                            26,
+                            Road No. B-8, Wagle Ind. Estate, Thane<br /> West-400604</span>
+                    </div>
+
+                    <div class="horizontal-rule"></div>
+
+                    <table class="invoice-items-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th class="right-align">Amount (INR)</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                    <div class="dashed-rule"></div>
+
+                    <div style="font-size:12px; font-weight:700; color:#000; margin: 6px 0;" id="display-inv-crn-ref">
+                        Ola Ride Number - CRN11276703197
+                    </div>
+
+                    <div class="horizontal-rule"></div>
+
+                    <table class="invoice-items-table">
+                        <tbody>
+                            <tr>
+                                <td>Convenience Fees</td>
+                                <td class="right-align" id="display-inv-fee">₹5.93</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    CGST<br>
+                                    <span class="sub-text">9.0%</span>
+                                </td>
+                                <td class="right-align" id="display-inv-cgst">₹0.53</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    SGST<br>
+                                    <span class="sub-text">9.0%</span>
+                                </td>
+                                <td class="right-align" id="display-inv-sgst">₹0.53</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="horizontal-rule"></div>
+
+                    <table class="invoice-items-table">
+                        <tbody>
+                            <tr class="total-value-row">
+                                <td>
+                                    Total<br>
+                                    <span class="sub-text" style="font-weight:normal;">Total value</span>
+                                </td>
+                                <td class="right-align" style="font-size:14px;" id="display-inv-total">₹7.01</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="horizontal-rule"></div>
+
+                    <div class="payment-details-section">
+                        <div class="payment-title">Payment Details</div>
+                        <div class="payment-meta-grid">
+                            <div class="payment-meta-label">Paid by</div>
+                            <div>Cash</div>
+
+                            <div class="payment-meta-label">Transaction date</div>
+                            <div id="display-inv-trans-date">04 Sep, 2026 10:16 AM</div>
+
+                            <div class="payment-meta-label">Amount</div>
+                            <div id="display-inv-paid-amount">₹7.01</div>
+                        </div>
+                    </div>
+
+                    <div class="horizontal-rule"></div>
+
+                    <div class="invoice-footnote">
+                        <div class="footnote-title">Please note:</div>
+                        1. This is an electronically generated invoice and subject to deduction of applicable taxes
+                        under
+                        the applicable GST law.<br>
+                        2. Vide Circular No. 146/02/2021- GST dated 23rd February 2021, Printing of Dynamic QR code is
+                        not
+                        mandatory.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

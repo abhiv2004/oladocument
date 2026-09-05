@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ola Tax Invoice - CIGYJTCWW539349</title>
+    <!-- Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- html2pdf.js CDN for clean client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Hidden / Secret PDF Download Trigger Button (Reveals on Hover) -->
+    <div class="hidden-pdf-trigger no-print">
+        <button class="secret-download-btn" onclick="downloadPDF('invoice-content', 'Ola_Tax_Invoice.pdf', this)"
+            title="Secret PDF Download Button (Ctrl + Shift + D)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download PDF
+        </button>
+    </div>
+
+    <!-- Outer Gray Frame Container matching Image 2 -->
+    <div class="invoice-card-frame">
+
+        <!-- Main Invoice Content Card -->
+        <div class="invoice-card" id="invoice-content">
+
+            <div class="invoice-top-title">Original Tax Invoice</div>
+
+            <!-- Top Company & Tax Meta Grid -->
+            <div class="invoice-header-grid">
+                <div class="company-details">
+                    <!-- OLA Logo -->
+                    <div style="margin-bottom: 8px;">
+                        <img src="ola_logo.png" alt="OLA Logo" style="height: 38px; width: auto; object-fit: contain;">
+                    </div>
+                    <div class="company-name">ANI Technologies Pvt. Ltd.</div>
+                    Gala No. 07, Ground floor, Amfotech Park, Plot<br>
+                    No - A/ 26, Road No. B-8, Wagle Ind. Estate,<br>
+                    Thane West-400604
+                </div>
+
+                <div class="tax-meta-details">
+                    State GSTIN: <strong>27AAJCA1389G1ZJ</strong><br>
+                    SAC Code: <strong>999799</strong><br>
+                    Service Tax Category: <strong>Business Auxiliary Service</strong>
+                </div>
+            </div>
+
+            <!-- Invoice ID & Invoice Date Row -->
+            <div class="invoice-id-row">
+                <div><span class="inv-id-label">Invoice ID</span> <span class="inv-id-val"
+                        id="display-inv-id">CIGYJTCWW539349</span></div>
+                <div><span class="inv-id-label">Invoice Date</span> <span class="inv-id-val"
+                        id="display-inv-date">04/09/2026</span></div>
+            </div>
+
+            <div class="horizontal-rule"></div>
+
+            <!-- Customer Info Row -->
+            <div class="customer-info-grid">
+                <div class="customer-name-block">Customer Name <span class="val-bold" id="display-inv-customer">SHARWAN
+                        VERMA</span></div>
+                <div class="customer-mobile-block">Mobile Number <span class="val-bold"
+                        id="display-inv-mobile">+919426996059</span></div>
+            </div>
+
+            <div class="horizontal-rule"></div>
+
+            <!-- Supply Address Row -->
+            <div class="supply-address-block">
+                Supply Address <span style="color:#000;">Gala No. 07, Ground floor, Amfotech Park, Plot No - A/ 26, Road
+                    No. B-8, Wagle Ind. Estate, Thane West-400604</span>
+            </div>
+
+            <div class="horizontal-rule"></div>
+
+            <!-- Description Table -->
+            <table class="invoice-items-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th class="right-align">Amount (INR)</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="dashed-rule"></div>
+
+            <div style="font-size:12px; font-weight:700; color:#000; margin: 6px 0;" id="display-inv-crn-ref">
+                Ola Ride Number - CRN11276703197
+            </div>
+
+            <div class="horizontal-rule"></div>
+
+            <table class="invoice-items-table">
+                <tbody>
+                    <tr>
+                        <td>Convenience Fees</td>
+                        <td class="right-align" id="display-inv-fee">₹5.93</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            CGST<br>
+                            <span class="sub-text">9.0%</span>
+                        </td>
+                        <td class="right-align" id="display-inv-cgst">₹0.53</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            SGST<br>
+                            <span class="sub-text">9.0%</span>
+                        </td>
+                        <td class="right-align" id="display-inv-sgst">₹0.53</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="horizontal-rule"></div>
+
+            <table class="invoice-items-table">
+                <tbody>
+                    <tr class="total-value-row">
+                        <td>
+                            Total<br>
+                            <span class="sub-text" style="font-weight:normal;">Total value</span>
+                        </td>
+                        <td class="right-align" style="font-size:14px;" id="display-inv-total">₹7.01</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="horizontal-rule"></div>
+
+            <!-- Payment Details Section -->
+            <div class="payment-details-section">
+                <div class="payment-title">Payment Details</div>
+                <div class="payment-meta-grid">
+                    <div class="payment-meta-label">Paid by</div>
+                    <div>Cash</div>
+
+                    <div class="payment-meta-label">Transaction date</div>
+                    <div id="display-inv-trans-date">04 Sep, 2026 10:16 AM</div>
+
+                    <div class="payment-meta-label">Amount</div>
+                    <div id="display-inv-paid-amount">₹7.01</div>
+                </div>
+            </div>
+
+            <div class="horizontal-rule"></div>
+
+            <!-- Footnote Section -->
+            <div class="invoice-footnote">
+                <div class="footnote-title">Please note:</div>
+                1. This is an electronically generated invoice and subject to deduction of applicable taxes under the
+                applicable GST law.<br>
+                2. Vide Circular No. 146/02/2021- GST dated 23rd February 2021, Printing of Dynamic QR code is not
+                mandatory.
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
